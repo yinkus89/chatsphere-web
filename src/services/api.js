@@ -1,6 +1,12 @@
-import axiosInstance from "./axiosConfig"; // Import your axios instance
+import axios from "axios";
 
-const API_URL = "https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0"; // Define your API URL
+// Define your API URL
+const API_URL = "https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0";
+
+// Create an Axios instance with the base URL
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+});
 
 // Utility function for email validation
 const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
@@ -17,7 +23,9 @@ export const loginUser = async (email, password) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    const errorMsg =
+      error.response?.data?.message || "Login failed. Please try again.";
+    throw new Error(errorMsg);
   }
 };
 
@@ -34,7 +42,9 @@ export const registerUser = async (name, email, password) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    const errorMsg =
+      error.response?.data?.message || "Registration failed. Please try again.";
+    throw new Error(errorMsg);
   }
 };
 
@@ -44,30 +54,32 @@ export const getProfile = async (userId) => {
     const response = await axiosInstance.get(`/user/${userId}/profile`);
     return response.data;
   } catch (error) {
-    throw error;
+    const errorMsg =
+      error.response?.data?.message || "Failed to fetch profile.";
+    throw new Error(errorMsg);
   }
 };
 
 // Send Message
 export const sendMessage = async (to, message) => {
   try {
-    const response = await axiosInstance.post(`${API_URL}/messages`, {
-      to,
-      message,
-    });
+    const response = await axiosInstance.post("/messages", { to, message });
     return response.data; // Assuming the response data contains the message
   } catch (error) {
-    throw error;
+    const errorMsg = error.response?.data?.message || "Failed to send message.";
+    throw new Error(errorMsg);
   }
 };
 
 // Fetch Messages
 export const fetchMessages = async (userId) => {
   try {
-    const response = await axiosInstance.get(`${API_URL}/messages/${userId}`); // Adjust endpoint as necessary
+    const response = await axiosInstance.get(`/messages/${userId}`); // Use the base URL
     return response.data; // Ensure this returns the expected message structure
   } catch (error) {
-    throw error;
+    const errorMsg =
+      error.response?.data?.message || "Failed to fetch messages.";
+    throw new Error(errorMsg);
   }
 };
 
@@ -79,7 +91,9 @@ export const uploadStatus = async (formData) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    const errorMsg =
+      error.response?.data?.message || "Failed to upload status.";
+    throw new Error(errorMsg);
   }
 };
 
@@ -91,7 +105,9 @@ export const uploadProfilePicture = async (formData) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    const errorMsg =
+      error.response?.data?.message || "Failed to upload profile picture.";
+    throw new Error(errorMsg);
   }
 };
 
@@ -103,7 +119,9 @@ export const updateUserName = async (id, newUserName) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    const errorMsg =
+      error.response?.data?.message || "Failed to update username.";
+    throw new Error(errorMsg);
   }
 };
 
@@ -115,7 +133,8 @@ export const searchUsersByUsername = async (username) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    const errorMsg = error.response?.data?.message || "Failed to search users.";
+    throw new Error(errorMsg);
   }
 };
 
@@ -130,6 +149,7 @@ export const addFriend = async (friendId) => {
     const response = await axiosInstance.post("/friends/add", { id: friendId });
     return response.data;
   } catch (error) {
-    throw error;
+    const errorMsg = error.response?.data?.message || "Failed to add friend.";
+    throw new Error(errorMsg);
   }
 };
