@@ -1,0 +1,152 @@
+[
+    {
+        "id": 101,
+        "name": "John Doe",
+        "username": "johndoe",
+        "email": "johndoe@example.com",
+        "password": "password123",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "New York",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T08:15:30Z",
+        "updatedAt": "2024-10-24T08:15:30Z",
+        "message": "Registration successful"
+    },
+    {
+        "id": 102,
+        "name": "Jane Smith",
+        "username": "janesmith",
+        "email": "janesmith@example.com",
+        "password": "mypassword456",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "Los Angeles",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T09:00:00Z",
+        "updatedAt": "2024-10-24T09:00:00Z",
+        "message": "Registration successful"
+    },
+    {
+        "id": 103,
+        "name": "Alice Johnson",
+        "username": "alicejohnson",
+        "email": "alice.johnson@example.com",
+        "password": "alicepass789",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "Chicago",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T09:30:00Z",
+        "updatedAt": "2024-10-24T09:30:00Z",
+        "message": "Registration successful"
+    },
+    {
+        "id": 104,
+        "name": "Bob Brown",
+        "username": "bobbrown",
+        "email": "bob.brown@example.com",
+        "password": "bobpassword101",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "Houston",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T10:00:00Z",
+        "updatedAt": "2024-10-24T10:00:00Z",
+        "message": "Registration successful"
+    },
+    {
+        "id": 105,
+        "name": "Charlie Davis",
+        "username": "charliedavis",
+        "email": "charlie.davis@example.com",
+        "password": "charliepass202",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "Phoenix",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T10:30:00Z",
+        "updatedAt": "2024-10-24T10:30:00Z",
+        "message": "Registration successful"
+    },
+    {
+        "id": 106,
+        "name": "Diana Evans",
+        "username": "dianaevans",
+        "email": "diana.evans@example.com",
+        "password": "diana1234",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "Philadelphia",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T11:00:00Z",
+        "updatedAt": "2024-10-24T11:00:00Z",
+        "message": "Registration successful"
+    },
+    {
+        "id": 107,
+        "name": "Ethan Foster",
+        "username": "ethanfoster",
+        "email": "ethan.foster@example.com",
+        "password": "ethanpassword567",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "San Antonio",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T11:30:00Z",
+        "updatedAt": "2024-10-24T11:30:00Z",
+        "message": "Registration successful"
+    },
+    {
+        "id": 108,
+        "name": "Fiona Green",
+        "username": "fionagreen",
+        "email": "fiona.green@example.com",
+        "password": "fionapass890",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "San Diego",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T12:00:00Z",
+        "updatedAt": "2024-10-24T12:00:00Z",
+        "message": "Registration successful"
+    },
+    {
+        "id": 109,
+        "name": "George Harris",
+        "username": "georgeharris",
+        "email": "george.harris@example.com",
+        "password": "georgepass234",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "Dallas",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T12:30:00Z",
+        "updatedAt": "2024-10-24T12:30:00Z",
+        "message": "Registration successful"
+    },
+    {
+        "id": 110,
+        "name": "Hannah Ives",
+        "username": "hannahives",
+        "email": "hannah.ives@example.com",
+        "password": "hannahpass345",
+        "profilePicture": "https://via.placeholder.com/100",
+        "location": {
+            "city": "Austin",
+            "country": "USA"
+        },
+        "createdAt": "2024-10-24T13:00:00Z",
+        "updatedAt": "2024-10-24T13:00:00Z",
+        "message": "Registration successful"
+    }
+]
