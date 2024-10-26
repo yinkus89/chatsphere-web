@@ -2,7 +2,8 @@
 import axios from "axios";
 
 // Use environment variable for the base URL or fallback to a default
-const API_URL = process.env.REACT_APP_API_URL || "https://your-api-server.com";
+const API_URL =
+  process.env.REACT_APP_API_URL || "https://your-api-server.com/api";
 
 // Create an Axios instance with the base URL and default headers
 const axiosInstance = axios.create({
@@ -30,6 +31,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response) {
       console.error("Response error:", error.response.data);
+      // Return the specific error message if provided by the API
       throw new Error(
         error.response.data.message || "An error occurred. Please try again."
       );
@@ -45,4 +47,23 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+// Utility function for handling file uploads (multipart/form-data)
+const uploadFile = async (url, file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const response = await axiosInstance.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("File upload failed:", error.message);
+    throw error;
+  }
+};
+
+// Export the axios instance and utility function
+export { axiosInstance as default, uploadFile };

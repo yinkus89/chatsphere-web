@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { sendMessage, fetchMessages } from "../services/api";
 import { useAuth } from "../context/AuthContext"; // Import AuthContext
 import "../styles/styles.css"; // Add a CSS file for styling
@@ -10,6 +10,7 @@ const Chat = () => {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState([]); // State to hold chat history
+  const chatEndRef = useRef(null); // Reference to scroll to the latest message
 
   // Fetch chat history when component mounts
   useEffect(() => {
@@ -25,6 +26,11 @@ const Chat = () => {
     loadMessages();
   }, [user.id]); // Fetch messages whenever user ID changes
 
+  // Scroll to the bottom of chat history
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatHistory]);
+
   const handleSend = async () => {
     if (!to || !message) {
       setStatus("Recipient ID and message cannot be empty.");
@@ -39,7 +45,7 @@ const Chat = () => {
       setStatus(response.message || "Message sent successfully!"); // Use response message if available
 
       // Optimistic UI update: add the message to chat history immediately
-      const newMessage = { from: user.id, text: message };
+      const newMessage = { from: user.id, to, text: message };
       setChatHistory((prevMessages) => [...prevMessages, newMessage]);
 
       setMessage(""); // Clear message input
@@ -89,11 +95,18 @@ const Chat = () => {
           <p>No messages yet.</p>
         ) : (
           chatHistory.map((msg, index) => (
-            <div key={index} className="chat-message">
-              <strong>{msg.from}</strong>: {msg.text}
+            <div
+              key={index}
+              className={`chat-message ${
+                msg.from === user.id ? "sent" : "received"
+              }`}
+            >
+              <strong>{msg.from === user.id ? "You" : msg.from}</strong>:{" "}
+              {msg.text}
             </div>
           ))
         )}
+        <div ref={chatEndRef} /> {/* Scroll reference */}
       </div>
     </div>
   );

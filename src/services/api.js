@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // Define your API URL
-const API_URL = "https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0";
+const API_URL =
+  "https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0/api";
 
 // Create an Axios instance with the base URL
 const axiosInstance = axios.create({

@@ -11,13 +11,25 @@ const UserForm = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Simple email validation function
+  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
 
+    // Validate input
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
       return;
     }
 
@@ -34,7 +46,7 @@ const UserForm = () => {
         }
       );
 
-      // Assuming the response contains the user data
+      // Assuming the response contains a success message
       setSuccessMessage("Registration successful! You can now log in.");
       // Optionally reset the form fields
       setName("");
@@ -69,36 +81,40 @@ const UserForm = () => {
       )}
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Name</label>
+          <label htmlFor="name">Name</label>
           <input
             type="text"
+            id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
         <div>
-          <label>Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
+            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
         <div>
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
         <div>
-          <label>Confirm Password</label>
+          <label htmlFor="confirmPassword">Confirm Password</label>
           <input
             type="password"
+            id="confirmPassword"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required

@@ -1,12 +1,10 @@
-// PrivateRoute.js
-import React from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // Adjust the path as necessary
+import { Navigate } from "react-router-dom"; // Keep only Navigate
+import { useAuth } from "../context/AuthContext"; // Import useAuth
 
 const PrivateRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth(); // Replace with your actual authentication logic
+  const { user } = useAuth(); // Get user data from AuthContext
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/login" />; // Navigate to login if user is not authenticated
 };
 
 export default PrivateRoute;

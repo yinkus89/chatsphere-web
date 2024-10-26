@@ -2,6 +2,7 @@
   "name": "chatsphere-web",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0",
   "dependencies": {
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.0.1",

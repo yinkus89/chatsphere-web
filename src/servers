@@ -1,13 +1,20 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   title: ChatSphere API
   version: 1.0.0
-  description: "API for ChatSphere, a real-time chat application."
+  description: API for ChatSphere, a real-time chat application.
+  contact:
+    name: ChatSphere Support
+    url: https://your-api-server.com/support
+    email: support@chatsphere.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: "https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0"
+  - url: "https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0"
+    description: SwaggerHub API Auto Mocking
   - url: "https://your-api-server.com/api"
+    description: Production Server
 components:
   securitySchemes:
     bearerAuth:
@@ -15,16 +22,35 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    Schema:
+    User:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          example: "12345"
+        name:
+          type: string
+          example: "John Doe"
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+      required:
+        - id
+        - name
+        - email
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Resource not found"
+      required:
+        - error
 paths:
   /auth/login:
     post:
-      summary: User Login
+      summary: User Login.
       description: Authenticate a user and retrieve a token.
       requestBody:
         required: true
@@ -36,10 +62,13 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: user@example.com
+                  example: "user@example.com"
                 password:
                   type: string
-                  example: yourPassword123
+                  example: "yourPassword123"
+              required:
+                - email
+                - password
       responses:
         "200":
           description: Successful login
@@ -50,12 +79,18 @@ paths:
                 properties:
                   token:
                     type: string
-                    example: JWT_TOKEN
+                    example: "JWT_TOKEN"
                   user:
                     $ref: "#/components/schemas/User"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /auth/register:
     post:
-      summary: User Registration
+      summary: User Registration.
       description: Register a new user.
       requestBody:
         required: true
@@ -66,14 +101,18 @@ paths:
               properties:
                 name:
                   type: string
-                  example: John Doe
+                  example: "John Doe"
                 email:
                   type: string
                   format: email
-                  example: user@example.com
+                  example: "user@example.com"
                 password:
                   type: string
-                  example: yourPassword123
+                  example: "yourPassword123"
+              required:
+                - name
+                - email
+                - password
       responses:
         "201":
           description: User registered successfully
@@ -87,9 +126,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-  "/user/{id}/profile":
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /user/{id}/profile:
     get:
-      summary: Get User Profile
+      summary: Get User Profile.
       description: Retrieve user profile data.
       security:
         - bearerAuth: []
@@ -113,9 +158,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /chat/send:
     post:
-      summary: Send Message
+      summary: Send Message.
       description: Send a chat message to a user or group.
       security:
         - bearerAuth: []
@@ -128,10 +179,13 @@ paths:
               properties:
                 to:
                   type: string
-                  example: USER_OR_GROUP_ID
+                  example: "USER_OR_GROUP_ID"
                 message:
                   type: string
-                  example: Hello!
+                  example: "Hello!"
+              required:
+                - to
+                - message
       responses:
         "200":
           description: Message sent successfully
@@ -142,16 +196,22 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Message sent successfully
+                    example: "Message sent successfully"
         "400":
           description: Bad request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /upload:
     post:
-      summary: Upload Profile Picture
+      summary: Upload Profile Picture.
       description: Upload a profile picture or status image.
       security:
         - bearerAuth: []
@@ -165,6 +225,8 @@ paths:
                 image:
                   type: string
                   format: binary
+              required:
+                - image
       responses:
         "200":
           description: Image uploaded successfully
@@ -175,43 +237,19 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Image uploaded successfully
+                    example: "Image uploaded successfully"
                   imageUrl:
                     type: string
-                    example: URL_TO_UPLOADED_IMAGE
-  /status/upload:
-    post:
-      summary: Upload Status
-      description: Upload an image as a status update.
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                image:
-                  type: string
-                  format: binary
-      responses:
-        "200":
-          description: Status image uploaded successfully
+                    example: "URL_TO_UPLOADED_IMAGE"
+        default:
+          description: Unexpected error
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Status image uploaded successfully
-                  statusUrl:
-                    type: string
-                    example: URL_TO_STATUS_IMAGE
+                $ref: "#/components/schemas/ErrorResponse"
   /geo/share:
     post:
-      summary: Share Location
+      summary: Share Location.
       description: Share the user's geolocation.
       security:
         - bearerAuth: []
@@ -224,7 +262,7 @@ paths:
               properties:
                 userId:
                   type: string
-                  example: USER_ID
+                  example: "USER_ID"
                 location:
                   type: object
                   properties:
@@ -234,6 +272,12 @@ paths:
                     longitude:
                       type: number
                       example: 98.765432
+                  required:
+                    - latitude
+                    - longitude
+              required:
+                - userId
+                - location
       responses:
         "200":
           description: Location shared successfully
@@ -244,36 +288,10 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Location shared successfully
-  "/geo/{userId}":
-    get:
-      summary: Get User Location
-      description: Retrieve the last shared location of a user.
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          description: User ID
-          schema:
-            type: string
-      responses:
-        "200":
-          description: User location retrieved
+                    example: "Location shared successfully"
+        default:
+          description: Unexpected error
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  location:
-                    type: object
-                    properties:
-                      latitude:
-                        type: number
-                        example: 12.345678
-                      longitude:
-                        type: number
-                        example: 98.765432
-                      timestamp:
-                        type: string
-                        format: date-time
-                        example: "2024-10-22T12:34:56Z"
+                $ref: "#/components/schemas/ErrorResponse"

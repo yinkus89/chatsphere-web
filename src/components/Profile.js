@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
+import axiosInstance from "../services/axiosConfig"; // Import axiosInstance
 import "../styles/styles.css";
 
 const Profile = () => {
   const { id } = useParams(); // ID of the user profile to fetch
   const { user, token } = useAuth();
   const [profile, setProfile] = useState({
-    name: user.name || "",
-    email: user.email || "",
-    location: "",
+    name: user?.name || "",
+    email: user?.email || "",
+    location: user?.location || "", // Assuming location is available in user
   });
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -20,15 +20,15 @@ const Profile = () => {
     if (!token) return; // Only fetch if token is available
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0/user/${id}/profile`, // Using ID
+      const response = await axiosInstance.get(
+        `user/${id}/profile`, // Using ID
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       setProfile(response.data);
     } catch (err) {
-      console.error(err);
+      console.error(err.response ? err.response.data : err);
       setError("Failed to fetch user data. Please try again.");
     } finally {
       setLoading(false);
@@ -46,8 +46,8 @@ const Profile = () => {
     setLoading(true);
 
     try {
-      const response = await axios.put(
-        `https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0/user/${id}/profile`, // Using ID
+      const response = await axiosInstance.put(
+        `user/${id}/profile`, // Using ID
         profile,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -59,7 +59,7 @@ const Profile = () => {
         setSuccessMessage("");
       }, 3000);
     } catch (err) {
-      console.error(err);
+      console.error(err.response ? err.response.data : err);
       setError("Failed to update profile. Please try again.");
     } finally {
       setLoading(false);
@@ -90,12 +90,12 @@ const Profile = () => {
       )}
 
       <div className="user-info">
-        <h2>Welcome, {user.name}</h2>
-        <p>Email: {user.email}</p>
+        <h2>Welcome, {user?.name}</h2>
+        <p>Email: {user?.email}</p>
         <p>
           Profile Picture:
           <img
-            src={user.profilePicture || "default-profile-pic.png"}
+            src={user?.profilePicture || "default-profile-pic.png"}
             alt="Profile"
             style={{ width: "100px", height: "100px", borderRadius: "50%" }}
           />

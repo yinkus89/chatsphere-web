@@ -32,6 +32,8 @@ const Register = () => {
       return;
     }
 
+    // Optionally: Add more complex password validation here
+
     setLoading(true); // Start loading state
 
     try {
@@ -56,6 +58,8 @@ const Register = () => {
         resetForm();
       }
     } catch (err) {
+      // Log error details for debugging
+      console.error("Registration error:", err);
       // Handle API errors
       if (err.response && err.response.data) {
         setError(
