@@ -1,0 +1,279 @@
+openapi: 3.0.0
+info:
+  title: ChatSphere API
+  version: 1.0.0
+  description: "API for ChatSphere, a real-time chat application."
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: "https://virtserver.swaggerhub.com/YINKAWLB/chatterbox1/1.0.0"
+  - url: "https://your-api-server.com/api"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+paths:
+  /auth/login:
+    post:
+      summary: User Login
+      description: Authenticate a user and retrieve a token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  example: yourPassword123
+      responses:
+        "200":
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: JWT_TOKEN
+                  user:
+                    $ref: "#/components/schemas/User"
+  /auth/register:
+    post:
+      summary: User Registration
+      description: Register a new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  example: yourPassword123
+      responses:
+        "201":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  "/user/{id}/profile":
+    get:
+      summary: Get User Profile
+      description: Retrieve user profile data.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /chat/send:
+    post:
+      summary: Send Message
+      description: Send a chat message to a user or group.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                to:
+                  type: string
+                  example: USER_OR_GROUP_ID
+                message:
+                  type: string
+                  example: Hello!
+      responses:
+        "200":
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Message sent successfully
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /upload:
+    post:
+      summary: Upload Profile Picture
+      description: Upload a profile picture or status image.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Image uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Image uploaded successfully
+                  imageUrl:
+                    type: string
+                    example: URL_TO_UPLOADED_IMAGE
+  /status/upload:
+    post:
+      summary: Upload Status
+      description: Upload an image as a status update.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Status image uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Status image uploaded successfully
+                  statusUrl:
+                    type: string
+                    example: URL_TO_STATUS_IMAGE
+  /geo/share:
+    post:
+      summary: Share Location
+      description: Share the user's geolocation.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  example: USER_ID
+                location:
+                  type: object
+                  properties:
+                    latitude:
+                      type: number
+                      example: 12.345678
+                    longitude:
+                      type: number
+                      example: 98.765432
+      responses:
+        "200":
+          description: Location shared successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Location shared successfully
+  "/geo/{userId}":
+    get:
+      summary: Get User Location
+      description: Retrieve the last shared location of a user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User location retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  location:
+                    type: object
+                    properties:
+                      latitude:
+                        type: number
+                        example: 12.345678
+                      longitude:
+                        type: number
+                        example: 98.765432
+                      timestamp:
+                        type: string
+                        format: date-time
+                        example: "2024-10-22T12:34:56Z"
