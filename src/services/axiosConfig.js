@@ -1,8 +1,10 @@
 // src/services/axiosConfig.js
 import axios from "axios";
 
-const API_URL = "https://your-api-server.com";
+// Use environment variable for the base URL or fallback to a default
+const API_URL = process.env.REACT_APP_API_URL || "https://your-api-server.com";
 
+// Create an Axios instance with the base URL and default headers
 const axiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
